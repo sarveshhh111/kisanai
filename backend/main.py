@@ -79,7 +79,7 @@ def health_check():
         "scheduler": "running" if scheduler.running else "stopped",
     }
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health_ping():
     return {"status": "ok"}
 
