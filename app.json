@@ -1,0 +1,70 @@
+{
+  "expo": {
+    "name": "Kisan AI",
+    "slug": "kisanai",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1B4332"
+    },
+    "ios": {
+      "bundleIdentifier": "com.kisanai.app",
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Kisan AI ko aapke shetra ka asli mausam dikhane ke liye location access chahiye.",
+        "NSMicrophoneUsageDescription": "Kisan AI ko awaaz se sawaal sunne ke liye microphone chahiye.",
+        "NSCameraUsageDescription": "Kisan AI ko fasal ki photo lene ke liye camera chahiye.",
+        "NSPhotoLibraryUsageDescription": "Kisan AI ko fasal ki photo chunne ke liye gallery access chahiye."
+      }
+    },
+    "android": {
+      "package": "com.kisanai.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#1B4332"
+      },
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "RECORD_AUDIO",
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-font",
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Kisan AI ko aapke shetra ka asli mausam dikhane ke liye location access chahiye.",
+          "locationAlwaysAndWhenInUsePermission": "Kisan AI ko aapke shetra ka asli mausam dikhane ke liye location access chahiye."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#1A7A4A",
+          "sounds": []
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Kisan AI ko fasal ki photo chunne ke liye gallery access chahiye.",
+          "cameraPermission": "Kisan AI ko fasal ki photo lene ke liye camera chahiye."
+        }
+      ]
+    ]
+  }
+}
