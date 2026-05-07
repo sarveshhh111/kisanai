@@ -2,16 +2,15 @@ import os
 from dotenv import load_dotenv
 from fastapi import APIRouter, Request, Response
 from twilio.twiml.messaging_response import MessagingResponse
-import google.generativeai as genai
+from groq import Groq
 import time
 
 load_dotenv()
 
 router = APIRouter()
 
-# Configure Gemini API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY", ""))
-model = genai.GenerativeModel('gemini-1.5-flash-latest')
+# Use Groq (same as chat.py) — no deprecated google.generativeai needed
+groq_client = Groq(api_key=os.getenv("GROQ_API_KEY", ""))
 
 TWILIO_ACCOUNT_SID = os.getenv("TWILIO_ACCOUNT_SID", "")
 TWILIO_AUTH_TOKEN = os.getenv("TWILIO_AUTH_TOKEN", "")
@@ -31,20 +30,27 @@ async def whatsapp_webhook(request: Request):
     if not message_body:
         return Response(content="<Response></Response>", media_type="application/xml")
 
-    # Generate Response using Gemini
+    # Generate Response using Groq Llama 3
     try:
-        system_prompt = """
-You are Kisan AI, a highly knowledgeable and friendly agricultural assistant built for Indian farmers.
-Respond in clear, easy-to-understand conversational Hindi written in Latin script (Hinglish).
-Keep your advice practical, specific to Indian farming contexts, and concise (under 4 sentences) for WhatsApp.
-        """
-        full_prompt = f"{system_prompt}\n\nFarmer's Question: {message_body}\nResponse:"
-        
-        # Call Gemini (blocks Event Loop briefly, but acceptable for this text scale)
-        ai_response = model.generate_content(full_prompt)
-        reply_text = ai_response.text.strip()
+        chat_response = groq_client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {
+                    "role": "system",
+                    "content": (
+                        "You are Kisan AI, a highly knowledgeable and friendly agricultural assistant built for Indian farmers. "
+                        "Respond in clear, easy-to-understand conversational Hindi written in Latin script (Hinglish). "
+                        "Keep your advice practical, specific to Indian farming contexts, and concise (under 4 sentences) for WhatsApp."
+                    )
+                },
+                {"role": "user", "content": message_body}
+            ],
+            max_tokens=256,
+            temperature=0.7,
+        )
+        reply_text = chat_response.choices[0].message.content.strip()
     except Exception as e:
-        print(f"Gemini API Error: {e}")
+        print(f"Groq WhatsApp Error: {e}")
         reply_text = "Maaf kijiye, server network me issue hai. Kripya thodi der baad message karein."
 
     # Construct Twilio TwiML Response
@@ -52,4 +58,3 @@ Keep your advice practical, specific to Indian farming contexts, and concise (un
     resp.message(reply_text)
     
     return Response(content=str(resp), media_type="application/xml")
-
