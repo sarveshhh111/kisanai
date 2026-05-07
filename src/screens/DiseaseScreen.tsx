@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, ScrollView, TouchableOpacity, Alert, Linking, Image, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, {
@@ -28,6 +28,14 @@ export default function DiseaseScreen({ navigation }: any) {
   const [activeCrop, setActiveCrop] = useState('Gehu');
   const [symptomText, setSymptomText] = useState('');
   const [imageUri, setImageUri] = useState<string | null>(null);
+
+  // Pre-warm the Render backend the moment this screen opens.
+  // Render free tier sleeps after 15min — this ping wakes it up
+  // so it's ready by the time the user picks a photo (~30s head start).
+  useEffect(() => {
+    fetch((process.env.EXPO_PUBLIC_API_URL || 'http://127.0.0.1:8000/v1').replace('/v1', '/'))
+      .catch(() => {}); // silent — just waking up the server
+  }, []);
 
   const scanProgress = useSharedValue(0);
 
@@ -124,7 +132,8 @@ export default function DiseaseScreen({ navigation }: any) {
     );
     try {
       const data = await KisanAPI.analyzeCropImage(base64Str, activeCrop);
-      if (data?.diseaseName?.includes('[Fallback]')) setIsFallback(true);
+      const isDemo = data?.diseaseName?.includes('[Demo]') || data?.diseaseName?.includes('[Fallback]');
+      if (isDemo) setIsFallback(true);
       setAnalysisResult(data);
     } catch {
       Alert.alert('Galti', 'Vishleshan mein kuch samasya aayi. Phir se try karein.');
@@ -271,7 +280,7 @@ export default function DiseaseScreen({ navigation }: any) {
               <View className="flex-row justify-between items-start mb-2">
                 <View className="flex-1">
                   <H2 className="text-price-red font-bold text-[20px] mb-1">
-                    {analysisResult?.diseaseName?.replace(' [Fallback]', '') ?? 'Unknown'}
+                    {(analysisResult?.diseaseName ?? 'Unknown').replace(' [Fallback]', '').replace(' [Demo]', '')}
                   </H2>
                   <Caption className="italic text-theme-muted mb-2">
                     {analysisResult?.scientificName ?? 'N/A'}
