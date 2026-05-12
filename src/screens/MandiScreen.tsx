@@ -66,30 +66,32 @@ const DropdownModal = ({
   selected: string; onSelect: (v: string) => void; onClose: () => void;
 }) => (
   <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-    <TouchableOpacity className="flex-1 bg-black/40" activeOpacity={1} onPress={onClose} />
-    <SafeAreaView className="bg-white rounded-t-[24px] max-h-[70%]">
-      <View className="flex-row justify-between items-center px-5 py-4 border-b border-theme-border">
-        <H2 className="text-theme-text font-bold">{title}</H2>
-        <TouchableOpacity onPress={onClose}>
-          <Ionicons name="close" size={24} color="#4B5563" />
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => { onSelect(item); onClose(); }}
-            className={`flex-row items-center justify-between px-5 py-4 border-b border-theme-border ${item === selected ? 'bg-leaf-light' : ''}`}
-          >
-            <BodyText className={item === selected ? 'text-kisan-green font-bold' : 'text-theme-text'}>
-              {item}
-            </BodyText>
-            {item === selected && <Ionicons name="checkmark-circle" size={20} color="#1A7A4A" />}
+    <View className="flex-1 justify-end">
+      <TouchableOpacity className="absolute top-0 bottom-0 left-0 right-0 bg-black/40" activeOpacity={1} onPress={onClose} />
+      <SafeAreaView className="bg-white rounded-t-[24px] max-h-[70%]">
+        <View className="flex-row justify-between items-center px-5 py-4 border-b border-theme-border">
+          <H2 className="text-theme-text font-bold">{title}</H2>
+          <TouchableOpacity onPress={onClose}>
+            <Ionicons name="close" size={24} color="#4B5563" />
           </TouchableOpacity>
-        )}
-      />
-    </SafeAreaView>
+        </View>
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => { onSelect(item); onClose(); }}
+              className={`flex-row items-center justify-between px-5 py-4 border-b border-theme-border ${item === selected ? 'bg-leaf-light' : ''}`}
+            >
+              <BodyText className={item === selected ? 'text-kisan-green font-bold' : 'text-theme-text'}>
+                {item}
+              </BodyText>
+              {item === selected && <Ionicons name="checkmark-circle" size={20} color="#1A7A4A" />}
+            </TouchableOpacity>
+          )}
+        />
+      </SafeAreaView>
+    </View>
   </Modal>
 );
 
