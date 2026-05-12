@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView, Platform, Alert,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   FadeInUp, useSharedValue, useAnimatedStyle,
   withRepeat, withTiming, withSequence, withDelay, Easing,
@@ -205,12 +206,13 @@ export default function ChatScreen({ navigation }: any) {
       className="flex-1 bg-theme-surface"
     >
       {/* Header */}
-      <View className="bg-kisan-green pt-14 pb-4 px-4 flex-row items-center shadow-sm">
+      <LinearGradient colors={['#073B25', '#0F766E']} className="pt-14 pb-4 px-4 flex-row items-center shadow-sm">
+        <View className="absolute right-[-40px] top-[-32px] w-[140px] h-[140px] rounded-full bg-white/10" />
         <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3">
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
-        <View className="w-10 h-10 rounded-full bg-white/20 items-center justify-center mr-3 relative">
-          <Ionicons name="leaf" size={20} color="white" />
+        <View className="w-11 h-11 rounded-[16px] bg-white/15 items-center justify-center mr-3 relative border border-white/20">
+          <Ionicons name="sparkles" size={20} color="#F6B84B" />
           <View className="absolute bottom-0 right-0 w-3 h-3 bg-[#16A34A] rounded-full border-2 border-kisan-green" />
         </View>
         <View className="flex-1">
@@ -224,11 +226,11 @@ export default function ChatScreen({ navigation }: any) {
               { text: 'Haan, Mita Do', style: 'destructive', onPress: () => useStore.getState().clearMessages() },
             ])
           }
-          className="bg-white/20 rounded-full px-3 py-1"
+          className="bg-white/15 border border-white/20 rounded-full px-3 py-1"
         >
           <Caption className="text-white">Clear</Caption>
         </TouchableOpacity>
-      </View>
+      </LinearGradient>
 
       {/* Chat Area */}
       <ScrollView
@@ -245,11 +247,11 @@ export default function ChatScreen({ navigation }: any) {
             <View
               className={`p-3 rounded-[16px] shadow-sm ${
                 msg.sender === 'user'
-                  ? 'bg-[#DCF8C6] rounded-tr-none border border-[#b2d99d]'
+                  ? 'bg-kisan-green rounded-tr-none border border-kisan-mint/40'
                   : 'bg-white rounded-tl-none border border-theme-border'
               }`}
             >
-              <BodyText className="text-theme-text mb-1 leading-relaxed">{msg.text}</BodyText>
+              <BodyText className={`${msg.sender === 'user' ? 'text-white' : 'text-theme-text'} mb-1 leading-relaxed`}>{msg.text}</BodyText>
             </View>
 
             <View className={`flex-row items-center mt-1 ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
@@ -278,23 +280,23 @@ export default function ChatScreen({ navigation }: any) {
             <TouchableOpacity
               key={chip}
               onPress={() => setInputText(chip)}
-              className="bg-white border border-kisan-green px-3 py-1.5 rounded-full"
+              className="bg-white border border-theme-border px-3 py-2 rounded-full shadow-sm"
             >
-              <Caption className="text-kisan-green font-medium">{chip}</Caption>
+              <Caption className="text-kisan-green font-bold">{chip}</Caption>
             </TouchableOpacity>
           ))}
         </Animated.View>
       </ScrollView>
 
       {/* Input Bar */}
-      <View className="bg-white px-4 py-3 border-t border-theme-border flex-row items-center pb-8">
+      <View className="bg-white px-4 py-3 border-t border-theme-border flex-row items-center pb-8 shadow-sm">
         <TouchableOpacity
           onPress={handleVoiceInput}
           className="mr-3 items-center justify-center"
           style={{ width: 44, height: 44 }}
         >
           {isListening && <MicPulse />}
-          <View className="w-[44px] h-[44px] rounded-full bg-kisan-green/10 items-center justify-center">
+          <View className="w-[44px] h-[44px] rounded-full bg-kisan-glow items-center justify-center border border-kisan-green/20">
             <Ionicons
               name={isListening ? 'mic' : 'mic-outline'}
               size={24}
@@ -319,7 +321,7 @@ export default function ChatScreen({ navigation }: any) {
           onPress={handleSend}
           disabled={!inputText.trim()}
           className={`w-[44px] h-[44px] rounded-full items-center justify-center ${
-            inputText.trim() ? 'bg-kisan-green' : 'bg-gray-200'
+            inputText.trim() ? 'bg-kisan-green shadow-sm' : 'bg-gray-200'
           }`}
         >
           <Ionicons name="send" size={20} color={inputText.trim() ? 'white' : '#9CA3AF'} />

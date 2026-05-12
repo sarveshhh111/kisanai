@@ -3,6 +3,7 @@ import {
   View, ScrollView, TouchableOpacity, Alert, TextInput,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { H1, H2, BodyText, Caption } from '../components/Typography';
 import { PrimaryButton, Chip } from '../components/Buttons';
@@ -60,12 +61,13 @@ export default function EditProfileScreen({ navigation }: any) {
   return (
     <View className="flex-1 bg-theme-surface">
       {/* Header */}
-      <View className="bg-kisan-green pt-14 pb-4 px-4 flex-row items-center shadow-sm">
-        <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3">
+      <LinearGradient colors={['#073B25', '#0F766E']} className="pt-14 pb-4 px-4 flex-row items-center shadow-sm rounded-b-[24px]">
+        <View className="absolute right-[-40px] top-[-32px] w-[140px] h-[140px] rounded-full bg-white/10" />
+        <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3 w-10 h-10 rounded-full bg-white/15 items-center justify-center border border-white/20">
           <Ionicons name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         <H2 className="text-white text-[18px]">Profile Edit Karein</H2>
-      </View>
+      </LinearGradient>
 
       <ScrollView className="flex-1 px-5 pt-6" showsVerticalScrollIndicator={false}>
         {/* Name */}

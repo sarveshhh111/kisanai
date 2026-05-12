@@ -72,7 +72,7 @@ Return ONLY a valid JSON object — no extra text, no markdown — with EXACTLY 
             image_part = types.Part.from_bytes(data=image_bytes, mime_type="image/jpeg")
             
             response = client.models.generate_content(
-                model="gemini-2.0-flash",
+                model="gemini-1.5-flash",
                 contents=[system_prompt, image_part],
             )
             result = _extract_json(response.text.strip())

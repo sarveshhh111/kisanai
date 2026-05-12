@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, TouchableOpacity, Alert, Linking, Image, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, {
   FadeInUp, useSharedValue, useAnimatedStyle,
   withTiming, Easing, withRepeat, withSequence,
@@ -156,18 +157,22 @@ export default function DiseaseScreen({ navigation }: any) {
   };
 
   return (
-    <View className="flex-1 bg-theme-surface pt-12">
-      <View className="px-4 pb-4">
+    <View className="flex-1 bg-theme-surface">
+      <LinearGradient colors={['#073B25', '#14532D', '#0F766E']} className="pt-14 pb-5 px-4 rounded-b-[28px]">
+        <View className="absolute right-[-42px] top-[-28px] w-[150px] h-[150px] rounded-full bg-white/10" />
         <View className="flex-row items-center mb-1">
-          <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3 p-1.5 rounded-full bg-leaf-light">
-            <Ionicons name="arrow-back" size={24} color="#1A7A4A" />
+          <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3 p-2 rounded-full bg-white/15 border border-white/20">
+            <Ionicons name="arrow-back" size={22} color="white" />
           </TouchableOpacity>
-          <H1>Kida aur Rog 🐛</H1>
+          <View className="flex-1">
+            <Caption className="text-white/70 font-medium">AI photo + symptom scan</Caption>
+            <H1 className="text-white text-[24px]">Kida aur Rog 🐛</H1>
+          </View>
         </View>
-        <Caption className="ml-[48px]">Photo ya lakshan se fasal ki bimari pehchaanein</Caption>
-      </View>
+        <Caption className="ml-[52px] text-white/75">Photo ya lakshan se fasal ki bimari pehchaanein</Caption>
+      </LinearGradient>
 
-      <ScrollView className="flex-1 px-4">
+      <ScrollView className="flex-1 px-4 pt-5">
         {!resultReady ? (
           <Animated.View entering={FadeInUp.springify()}>
             {/* Crop Selector */}
@@ -186,7 +191,7 @@ export default function DiseaseScreen({ navigation }: any) {
             {/* Upload Zone */}
             <View className="mb-4">
               {imageUri ? (
-                <View className="rounded-[16px] overflow-hidden mb-3 relative h-[200px]">
+                <View className="rounded-[22px] overflow-hidden mb-3 relative h-[220px] border border-theme-border shadow-sm">
                   <Image source={{ uri: imageUri }} className="w-full h-full" resizeMode="cover" />
                   {analyzing && (
                     <View className="absolute inset-0 bg-black/50 items-center justify-center">
@@ -197,7 +202,8 @@ export default function DiseaseScreen({ navigation }: any) {
                   )}
                 </View>
               ) : (
-                <View className="bg-theme-surface border-2 border-dashed border-kisan-green rounded-[16px] h-[180px] items-center justify-center mb-3 relative overflow-hidden">
+                <View className="bg-white border-2 border-dashed border-kisan-green rounded-[22px] h-[190px] items-center justify-center mb-3 relative overflow-hidden shadow-sm">
+                  <View className="absolute right-[-28px] top-[-28px] w-24 h-24 rounded-full bg-kisan-glow" />
                   {analyzing ? (
                     <>
                       <Animated.View style={scanStyle} className="absolute w-full h-1 bg-mint-fresh z-10" />
@@ -206,10 +212,13 @@ export default function DiseaseScreen({ navigation }: any) {
                     </>
                   ) : (
                     <>
-                      <Ionicons name="camera" size={48} color="#1A7A4A" style={{ marginBottom: 8 }} />
-                      <BodyText className="text-kisan-green font-medium text-center px-4">
+                      <View className="w-16 h-16 rounded-[22px] bg-kisan-glow items-center justify-center mb-3">
+                        <Ionicons name="camera" size={34} color="#1A7A4A" />
+                      </View>
+                      <BodyText className="text-kisan-green font-bold text-center px-4">
                         Niche se photo lo ya gallery se chunein
                       </BodyText>
+                      <Caption className="mt-1">Patta, stem, fruit ya daag clearly dikhayein</Caption>
                     </>
                   )}
                 </View>
@@ -220,7 +229,7 @@ export default function DiseaseScreen({ navigation }: any) {
                 <TouchableOpacity
                   onPress={pickFromCamera}
                   disabled={analyzing}
-                  className="flex-1 bg-kisan-green rounded-[12px] py-3 flex-row items-center justify-center"
+                  className="flex-1 bg-kisan-green rounded-[16px] py-3 flex-row items-center justify-center shadow-sm"
                 >
                   <Ionicons name="camera" size={18} color="white" style={{ marginRight: 8 }} />
                   <BodyText className="text-white font-bold">Camera</BodyText>
@@ -228,7 +237,7 @@ export default function DiseaseScreen({ navigation }: any) {
                 <TouchableOpacity
                   onPress={pickFromGallery}
                   disabled={analyzing}
-                  className="flex-1 bg-leaf-light border border-kisan-green rounded-[12px] py-3 flex-row items-center justify-center"
+                  className="flex-1 bg-white border border-kisan-green rounded-[16px] py-3 flex-row items-center justify-center shadow-sm"
                 >
                   <Ionicons name="images" size={18} color="#1A7A4A" style={{ marginRight: 8 }} />
                   <BodyText className="text-kisan-green font-bold">Gallery</BodyText>
@@ -247,7 +256,7 @@ export default function DiseaseScreen({ navigation }: any) {
             <Input
               placeholder="Jaise: patte peele ho rahe hain, stem mein daag, fruits gal rahe hain..."
               multiline
-              className="h-[100px] py-3 mb-4"
+              className="h-[112px] py-3 mb-4"
               style={{ textAlignVertical: 'top' }}
               value={symptomText}
               onChangeText={setSymptomText}
@@ -276,7 +285,7 @@ export default function DiseaseScreen({ navigation }: any) {
             )}
 
             {/* Result Card */}
-            <View className="bg-white rounded-[16px] border border-theme-border shadow-sm p-4 mb-6">
+            <View className="bg-white rounded-[22px] border border-theme-border shadow-sm p-4 mb-6">
               <View className="flex-row justify-between items-start mb-2">
                 <View className="flex-1">
                   <H2 className="text-price-red font-bold text-[20px] mb-1">
@@ -291,7 +300,7 @@ export default function DiseaseScreen({ navigation }: any) {
                     </Caption>
                   </View>
                 </View>
-                <View className="items-end bg-leaf-light px-3 py-2 rounded-[12px]">
+                <View className="items-end bg-kisan-glow px-3 py-2 rounded-[14px]">
                   <H2 className="text-kisan-green font-bold">
                     {analysisResult?.confidence ? `${Math.round(analysisResult.confidence * 100)}%` : '90%'}
                   </H2>
@@ -303,7 +312,7 @@ export default function DiseaseScreen({ navigation }: any) {
 
             {/* Treatment */}
             <BodyText className="font-bold mb-3">Pura Upaay (Treatment)</BodyText>
-            <View className="bg-[#DCFCE7] rounded-[16px] border border-kisan-green/30 p-4 mb-4">
+            <View className="bg-[#DCFCE7] rounded-[20px] border border-kisan-green/30 p-4 mb-4 shadow-sm">
               <View className="flex-row items-center mb-2">
                 <Ionicons name="flask" size={20} color="#16A34A" />
                 <H2 className="ml-2 text-kisan-green font-bold">Rasayanik Dawai (Chemical)</H2>
@@ -324,7 +333,7 @@ export default function DiseaseScreen({ navigation }: any) {
             </View>
 
             {/* Prevention */}
-            <View className="bg-white rounded-[16px] border border-theme-border p-4 mb-10 shadow-sm">
+            <View className="bg-white rounded-[20px] border border-theme-border p-4 mb-10 shadow-sm">
               <H2 className="mb-2 text-theme-text font-bold">Bachaav (Prevention tips)</H2>
               {(analysisResult?.prevention ?? []).map((tip: string, idx: number) => (
                 <View key={idx} className="flex-row mt-2 pr-4">

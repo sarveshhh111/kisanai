@@ -8,7 +8,7 @@ export const Input = ({ className = '', onFocus, onBlur, ...props }: TextInputPr
   
   return (
     <TextInput
-      className={`h-[48px] px-4 rounded-[12px] border font-sans text-[14px] text-theme-text ${isFocused ? 'border-kisan-green bg-white' : 'border-theme-border bg-theme-surface'} ${className}`}
+      className={`h-[50px] px-4 rounded-[16px] border font-sans text-[14px] text-theme-text ${isFocused ? 'border-kisan-green bg-white shadow-sm' : 'border-theme-border bg-white'} ${className}`}
       onFocus={(e) => { setIsFocused(true); onFocus?.(e); }}
       onBlur={(e) => { setIsFocused(false); onBlur?.(e); }}
       placeholderTextColor="#9CA3AF"
@@ -18,7 +18,7 @@ export const Input = ({ className = '', onFocus, onBlur, ...props }: TextInputPr
 };
 
 export const SearchBar = ({ className = '', ...props }: TextInputProps & { className?: string }) => (
-  <View className={`h-[44px] bg-theme-surface rounded-[12px] flex-row items-center px-3 ${className}`}>
+  <View className={`h-[46px] bg-white rounded-[16px] flex-row items-center px-3 border border-theme-border shadow-sm ${className}`}>
     <Ionicons name="search" size={20} color="#9CA3AF" />
     <TextInput
       className="flex-1 h-full ml-2 font-sans text-[14px] text-theme-text"

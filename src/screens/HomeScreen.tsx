@@ -14,16 +14,48 @@ import { useTranslation } from '../i18n';
 import { registerForPushNotificationsAsync } from '../services/notifications';
 import { KisanAPI } from '../services/api';
 
+const PremiumAction = ({ action, onPress }: { action: any; onPress: () => void }) => {
+  const lift = useSharedValue(1);
+  const pressStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: lift.value }],
+  }));
+
+  return (
+    <Animated.View style={pressStyle} className="w-[48%] mb-3">
+      <TouchableOpacity
+        activeOpacity={0.88}
+        onPressIn={() => { lift.value = withTiming(0.97, { duration: 120 }); }}
+        onPressOut={() => { lift.value = withTiming(1, { duration: 140 }); }}
+        onPress={onPress}
+        className="bg-white rounded-[20px] p-3 border border-theme-border shadow-sm"
+      >
+        <View className="flex-row items-center">
+          <View
+            className="w-11 h-11 rounded-[15px] items-center justify-center mr-3"
+            style={{ backgroundColor: action.color }}
+          >
+            <Ionicons name={action.icon as any} size={23} color="#0F5C35" />
+          </View>
+          <View className="flex-1">
+            <BodyText className="font-bold text-theme-text leading-tight" numberOfLines={1}>{action.title}</BodyText>
+            <Caption className="text-[10px] mt-0.5">{action.subtitle}</Caption>
+          </View>
+        </View>
+      </TouchableOpacity>
+    </Animated.View>
+  );
+};
+
 export default function HomeScreen({ navigation }: any) {
   const { profile, mandiPrices, weatherData, fetchLocation } = useStore();
   const { t } = useTranslation();
   const pulse = useSharedValue(1);
 
   const quickActions = [
-    { id: '1', title: t('fasal_salah'), icon: 'leaf-outline', color: '#E8F5EE' },
-    { id: '2', title: t('mandi_bhav'), icon: 'bar-chart-outline', color: '#FEF9E8' },
-    { id: '3', title: t('sarkari_yojana'), icon: 'document-text-outline', color: '#EAF4FE' },
-    { id: '4', title: t('kida_rog'), icon: 'bug-outline', color: '#FEE2E2' },
+    { id: '1', title: t('fasal_salah'), subtitle: 'AI crop guide', icon: 'leaf-outline', color: '#DDF8EA' },
+    { id: '2', title: t('mandi_bhav'), subtitle: 'Live prices', icon: 'bar-chart-outline', color: '#FFF1C8' },
+    { id: '3', title: t('sarkari_yojana'), subtitle: 'Apply & track', icon: 'document-text-outline', color: '#DDF4FF' },
+    { id: '4', title: t('kida_rog'), subtitle: 'Photo diagnosis', icon: 'scan-outline', color: '#FFE2D9' },
   ];
 
   useEffect(() => {
@@ -59,13 +91,16 @@ export default function HomeScreen({ navigation }: any) {
   return (
     <View className="flex-1 bg-theme-surface">
       <LinearGradient
-        colors={['#0F5C35', '#1A7A4A']}
-        className="pt-14 pb-8 px-5 rounded-b-[24px]"
+        colors={['#073B25', '#0F766E', '#1A7A4A']}
+        className="pt-14 pb-7 px-5 rounded-b-[34px]"
       >
-        <View className="flex-row justify-between items-start mb-6">
+        <View className="absolute right-[-36px] top-[-28px] w-[150px] h-[150px] rounded-full bg-white/10" />
+        <View className="absolute left-[-50px] bottom-[-52px] w-[140px] h-[140px] rounded-full bg-agri-gold/20" />
+        <View className="flex-row justify-between items-start mb-5">
           <View>
-            <BodyText className="text-white opacity-90 mb-1">{t('namaste')}</BodyText>
-            <H1 className="text-white text-[24px]">{profile.name} 👋</H1>
+            <Caption className="text-white/75 mb-1 font-medium">{t('namaste')}</Caption>
+            <H1 className="text-white text-[26px]">{profile.name} 👋</H1>
+            <BodyText className="text-white/75 text-[12px] mt-1">{profile.location} {t('realtime')}</BodyText>
           </View>
           <View>
             <IconButton className="bg-white/20 border border-white/30">
@@ -78,27 +113,30 @@ export default function HomeScreen({ navigation }: any) {
           </View>
         </View>
 
-        {/* Weather Widget — taps to full weather screen */}
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => navigation.navigate('Weather')}
-          className="bg-white/10 rounded-[16px] p-4 border border-white/20"
+          className="bg-white/15 rounded-[24px] p-4 border border-white/25 shadow-sm"
         >
           {weatherData ? (
             <>
-              <View className="flex-row justify-between items-center mb-1">
-                <View className="flex-row items-center">
-                  <H1 className="text-white text-[28px] mr-2">{weatherData.current.temp}°C</H1>
-                  <Ionicons name={weatherData.current.icon as any} size={28} color="#FEF9E8" />
+              <View className="flex-row justify-between items-center">
+                <View>
+                  <Caption className="text-white/70 font-medium mb-1">Aaj ka mausam</Caption>
+                  <View className="flex-row items-center">
+                    <H1 className="text-white text-[38px] mr-2">{weatherData.current.temp}°C</H1>
+                    <Ionicons name={weatherData.current.icon as any} size={34} color="#F6B84B" />
+                  </View>
                 </View>
                 <View className="items-end">
-                  <Caption className="text-white/80">{weatherData.current.description}</Caption>
-                  <BodyText className="text-white font-medium">
+                  <Caption className="text-white/75 mb-1">{weatherData.current.description}</Caption>
+                  <View className="bg-white/20 px-3 py-1 rounded-full">
+                    <BodyText className="text-white font-bold text-[12px]">
                     {Math.round(rainProb)}{t('chance_rain')}
-                  </BodyText>
+                    </BodyText>
+                  </View>
                 </View>
               </View>
-              <BodyText className="text-white/80">{profile.location} {t('realtime')}</BodyText>
             </>
           ) : (
             <View className="items-center justify-center p-2">
@@ -110,47 +148,42 @@ export default function HomeScreen({ navigation }: any) {
       </LinearGradient>
 
       <ScrollView className="flex-1 px-5 pt-6" showsVerticalScrollIndicator={false}>
-        {/* Quick Actions */}
         <Animated.View entering={FadeInUp.delay(100).springify()}>
-          <View className="flex-row justify-between mb-8">
+          <View className="flex-row justify-between items-center mb-3">
+            <H2 className="text-theme-text font-bold">Quick Kheti Tools</H2>
+            <View className="bg-agri-gold/20 px-2.5 py-1 rounded-full">
+              <Caption className="text-kisan-deep font-bold text-[10px]">Live</Caption>
+            </View>
+          </View>
+          <View className="flex-row flex-wrap justify-between mb-5">
             {quickActions.map((action) => (
-              <TouchableOpacity
+              <PremiumAction
                 key={action.id}
-                className="items-center"
-                activeOpacity={0.7}
+                action={action}
                 onPress={() => {
                   if (action.id === '1') navigation.navigate('ChatTab');
                   if (action.id === '2') navigation.navigate('Mandi');
                   if (action.id === '3') navigation.navigate('MainTabs', { screen: 'YojanaTab' });
                   if (action.id === '4') navigation.navigate('Disease');
                 }}
-              >
-                <View
-                  className="w-[60px] h-[60px] rounded-[16px] items-center justify-center mb-2"
-                  style={{ backgroundColor: action.color }}
-                >
-                  <Ionicons name={action.icon as any} size={28} color="#1A7A4A" />
-                </View>
-                <Caption className="text-center text-[12px]">{action.title}</Caption>
-              </TouchableOpacity>
+              />
             ))}
           </View>
         </Animated.View>
 
-        {/* Ask Kisan AI */}
-        <Animated.View entering={FadeInUp.delay(200).springify()} className="mb-8">
+        <Animated.View entering={FadeInUp.delay(200).springify()} className="mb-7">
           <AskBarCard onPress={() => navigation.navigate('ChatTab')} />
         </Animated.View>
 
-        {/* Today's Mandi Prices */}
         <Animated.View entering={FadeInUp.delay(300).springify()} className="mb-8">
           <View className="flex-row justify-between items-center mb-4">
             <H2 className="text-theme-text font-bold">{t('todays_mandi')}</H2>
-            <TouchableOpacity onPress={() => navigation.navigate('Mandi')}>
-              <Caption className="text-kisan-green font-medium">{t('see_all')}</Caption>
+            <TouchableOpacity onPress={() => navigation.navigate('Mandi')} className="flex-row items-center">
+              <Caption className="text-kisan-green font-bold mr-1">{t('see_all')}</Caption>
+              <Ionicons name="arrow-forward" size={13} color="#1A7A4A" />
             </TouchableOpacity>
           </View>
-          <View className="bg-white rounded-[16px] border border-theme-border overflow-hidden">
+          <View className="bg-white rounded-[22px] border border-theme-border overflow-hidden shadow-sm">
             {displayPrices.map((item, idx) => (
               <View
                 key={item.id}
@@ -161,7 +194,7 @@ export default function HomeScreen({ navigation }: any) {
                   <Caption>{item.apmc}</Caption>
                 </View>
                 <View className="items-end">
-                  <PriceText>{item.price}</PriceText>
+                  <PriceText className="text-[17px]">{item.price}</PriceText>
                   <View className={`px-2 py-0.5 mt-1 rounded-full ${item.up ? 'bg-[#DCFCE7]' : 'bg-[#FEE2E2]'}`}>
                     <Caption className={item.up ? 'text-price-green font-medium' : 'text-price-red font-medium'}>
                       {item.delta} {item.up ? '↑' : '↓'}

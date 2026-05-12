@@ -3,6 +3,7 @@ import {
   View, ScrollView, RefreshControl, TouchableOpacity, Modal,
   FlatList, SafeAreaView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeInUp, useSharedValue, useAnimatedStyle, withSpring, withSequence } from 'react-native-reanimated';
 import { H1, H2, BodyText, Caption, PriceText } from '../components/Typography';
@@ -124,50 +125,56 @@ export default function MandiScreen({ navigation }: any) {
   const apmcList = APMCS[selectedState] ?? APMCS.default;
 
   return (
-    <View className="flex-1 bg-theme-surface pt-12">
-      <View className="px-4 pb-4 bg-white border-b border-theme-border shadow-sm z-10">
+    <View className="flex-1 bg-theme-surface">
+      <LinearGradient colors={['#073B25', '#0F766E']} className="pt-14 px-4 pb-5 rounded-b-[28px] z-10">
+        <View className="absolute right-[-48px] top-[-36px] w-[150px] h-[150px] rounded-full bg-white/10" />
         <View className="flex-row items-center mb-4">
-          <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3 p-1.5 rounded-full bg-leaf-light">
-            <Ionicons name="arrow-back" size={24} color="#1A7A4A" />
+          <TouchableOpacity onPress={() => navigation.goBack()} className="mr-3 p-2 rounded-full bg-white/15 border border-white/20">
+            <Ionicons name="arrow-back" size={22} color="white" />
           </TouchableOpacity>
-          <H1>Mandi Bhav 📊</H1>
+          <View className="flex-1">
+            <Caption className="text-white/70 font-medium">Agmarknet se • Aaj</Caption>
+            <H1 className="text-white text-[24px]">Mandi Bhav 📊</H1>
+          </View>
+          <View className="bg-agri-gold px-3 py-1 rounded-full">
+            <Caption className="text-kisan-deep font-bold">{mandiPrices.length} rates</Caption>
+          </View>
         </View>
 
         <SearchBar
           placeholder="Apni fasal khojein..."
-          className="mb-3"
+          className="mb-3 border-white/30"
           value={searchQuery}
           onChangeText={handleSearch}
         />
 
-        {/* Functional Dropdowns */}
         <View className="flex-row gap-2">
           <TouchableOpacity
             onPress={() => setStateModalVisible(true)}
-            className="flex-1 h-[36px] rounded-full border border-gray-200 bg-theme-surface flex-row items-center justify-between px-3"
+            className="flex-1 h-[38px] rounded-full border border-white/25 bg-white/15 flex-row items-center justify-between px-3"
           >
-            <Caption className="text-theme-text font-medium" numberOfLines={1}>{selectedState}</Caption>
-            <Ionicons name="chevron-down" size={14} color="#4B5563" />
+            <Caption className="text-white font-bold" numberOfLines={1}>{selectedState}</Caption>
+            <Ionicons name="chevron-down" size={14} color="white" />
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={() => setApmcModalVisible(true)}
-            className="flex-1 h-[36px] rounded-full border border-gray-200 bg-theme-surface flex-row items-center justify-between px-3"
+            className="flex-1 h-[38px] rounded-full border border-white/25 bg-white/15 flex-row items-center justify-between px-3"
           >
-            <Caption className="text-theme-text font-medium" numberOfLines={1}>{selectedApmc}</Caption>
-            <Ionicons name="chevron-down" size={14} color="#4B5563" />
+            <Caption className="text-white font-bold" numberOfLines={1}>{selectedApmc}</Caption>
+            <Ionicons name="chevron-down" size={14} color="white" />
           </TouchableOpacity>
         </View>
-      </View>
+      </LinearGradient>
 
       <ScrollView
         className="flex-1"
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} colors={['#1A7A4A']} />}
       >
-        <View className="px-4 py-4">
+        <View className="px-4 py-5">
           <View className="flex-row justify-between items-center mb-3">
             <H2 className="text-theme-text font-bold">{mandiPrices.length} Fasal Bhav</H2>
-            <Caption>Agmarknet se • Aaj</Caption>
+            <Caption>Pull down to refresh</Caption>
           </View>
 
           {mandiPrices.length === 0 ? (
@@ -176,23 +183,26 @@ export default function MandiScreen({ navigation }: any) {
               <Caption className="mt-3">Koi fasal nahi mili. Filter badlein.</Caption>
             </View>
           ) : (
-            <View className="bg-white rounded-[16px] border border-theme-border overflow-hidden mb-6 shadow-sm">
+            <View className="mb-6">
               {mandiPrices.map((item, idx) => (
                 <Animated.View
                   entering={FadeInUp.delay(idx * 60).springify()}
                   key={item.id}
-                  className={`flex-row items-center p-4 ${idx !== mandiPrices.length - 1 ? 'border-b border-theme-border' : ''}`}
+                  className="bg-white rounded-[20px] border border-theme-border p-4 mb-3 shadow-sm"
                 >
-                  <View style={{ width: '35%' }}>
-                    <BodyText className="font-bold text-[14px] mb-0.5">{item.crop}</BodyText>
-                    <Caption>{item.apmc}</Caption>
+                  <View className="flex-row items-start justify-between mb-3">
+                    <View className="flex-1 pr-3">
+                      <BodyText className="font-bold text-[15px] mb-0.5">{item.crop}</BodyText>
+                      <Caption>{item.apmc}</Caption>
+                    </View>
+                    <View className="items-end">
+                      <PriceText className="text-[18px]">{item.price}</PriceText>
+                      <PriceBadge up={item.up} delta={item.delta} />
+                    </View>
                   </View>
-
-                  <PriceRangeBar min={item.min} price={item.price} max={item.max} />
-
-                  <View className="items-end" style={{ width: '28%' }}>
-                    <PriceText className="text-[14px]">{item.price}</PriceText>
-                    <PriceBadge up={item.up} delta={item.delta} />
+                  <View className="flex-row items-center">
+                    <Caption className="text-[10px] font-bold text-theme-muted mr-2">Min-Max</Caption>
+                    <PriceRangeBar min={item.min} price={item.price} max={item.max} />
                   </View>
                 </Animated.View>
               ))}

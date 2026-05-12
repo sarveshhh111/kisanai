@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Switch, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { H1, H2, BodyText, Caption } from '../components/Typography';
 import { Chip } from '../components/Buttons';
@@ -42,16 +43,20 @@ export default function ProfileScreen({ navigation }: any) {
   };
 
   return (
-    <ScrollView className="flex-1 bg-theme-surface pt-16 px-5" showsVerticalScrollIndicator={false}>
-      {/* Avatar */}
-      <View className="items-center mb-8">
-        <View className="w-[88px] h-[88px] rounded-full bg-kisan-green items-center justify-center mb-4 shadow-sm">
+    <ScrollView className="flex-1 bg-theme-surface" showsVerticalScrollIndicator={false}>
+      <LinearGradient colors={['#073B25', '#0F766E']} className="pt-16 px-5 pb-8 rounded-b-[30px]">
+        <View className="absolute right-[-44px] top-[-34px] w-[150px] h-[150px] rounded-full bg-white/10" />
+        <View className="items-center">
+        <View className="w-[92px] h-[92px] rounded-[30px] bg-white/15 border border-white/25 items-center justify-center mb-4 shadow-sm">
           <H1 className="text-white text-[32px]">{initials}</H1>
         </View>
-        <H1 className="mb-1 text-[24px]">{profile.name}</H1>
-        <Caption className="text-[14px]">{profile.location}</Caption>
-        {profile.phone ? <Caption className="text-[12px] mt-1">📱 +91 {profile.phone}</Caption> : null}
-      </View>
+        <H1 className="mb-1 text-[24px] text-white">{profile.name}</H1>
+        <Caption className="text-[14px] text-white/80">{profile.location}</Caption>
+        {profile.phone ? <Caption className="text-[12px] mt-1 text-white/70">📱 +91 {profile.phone}</Caption> : null}
+        </View>
+      </LinearGradient>
+
+      <View className="px-5 pt-6">
 
       {/* Farm Details */}
       <Animated.View entering={FadeInUp.delay(100).springify()} className="mb-8">
@@ -62,7 +67,7 @@ export default function ProfileScreen({ navigation }: any) {
             <Caption className="text-kisan-green font-medium">{t('edit')}</Caption>
           </TouchableOpacity>
         </View>
-        <View className="bg-white rounded-[16px] p-4 border border-theme-border shadow-sm flex-row justify-between">
+        <View className="bg-white rounded-[20px] p-4 border border-theme-border shadow-sm flex-row justify-between">
           <View>
             <Caption className="mb-1">{t('land')}</Caption>
             <BodyText className="font-bold">{profile.landSize || '2.5'} Acres</BodyText>
@@ -83,7 +88,7 @@ export default function ProfileScreen({ navigation }: any) {
       {/* Settings */}
       <Animated.View entering={FadeInUp.delay(200).springify()} className="mb-8">
         <H2 className="text-theme-text font-bold mb-4">{t('settings')}</H2>
-        <View className="bg-white rounded-[16px] border border-theme-border shadow-sm overflow-hidden">
+        <View className="bg-white rounded-[20px] border border-theme-border shadow-sm overflow-hidden">
           <TouchableOpacity
             onPress={cycleLanguage}
             activeOpacity={0.7}
@@ -135,7 +140,7 @@ export default function ProfileScreen({ navigation }: any) {
 
       {/* Upgrade Banner */}
       <Animated.View entering={FadeInUp.delay(400).springify()} className="mb-10">
-        <View className="bg-amber-bg border border-[#FDE68A] rounded-[16px] p-4 flex-row items-center justify-between">
+        <View className="bg-amber-bg border border-[#FDE68A] rounded-[20px] p-4 flex-row items-center justify-between shadow-sm">
           <View className="flex-1 mr-4">
             <H2 className="text-alert-amber font-bold mb-1">{t('free_plan')}</H2>
             <Caption>{t('questions_left')}</Caption>
@@ -156,6 +161,7 @@ export default function ProfileScreen({ navigation }: any) {
       >
         <Caption className="text-price-red font-medium">Log out</Caption>
       </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 }

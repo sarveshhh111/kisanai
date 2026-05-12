@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, TouchableOpacity, KeyboardAvoidingView, Platform, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp, FadeIn, FadeOut } from 'react-native-reanimated';
 import { H1, H2, BodyText, Caption } from '../components/Typography';
 import { Input, OTPInput } from '../components/Inputs';
@@ -127,30 +128,31 @@ export default function OnboardingScreen({ navigation }: any) {
   };
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 bg-white">
+    <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} className="flex-1 bg-theme-surface">
       {/* Hidden reCAPTCHA container for web Firebase */}
       {Platform.OS === 'web' && <div id="recaptcha-container" />}
 
       {step < 3 ? (
         <View className="flex-1">
           {/* Logo + Skip */}
-          <View className="flex-row justify-between items-center px-6 pt-16 pb-4">
+          <LinearGradient colors={['#073B25', '#0F766E']} className="flex-row justify-between items-center px-6 pt-16 pb-5 rounded-b-[28px]">
+            <View className="absolute right-[-42px] top-[-30px] w-[150px] h-[150px] rounded-full bg-white/10" />
             <View className="flex-row items-center">
-              <View className="w-8 h-8 rounded-full bg-kisan-green items-center justify-center mr-2">
-                <Ionicons name="leaf" size={16} color="white" />
+              <View className="w-9 h-9 rounded-[14px] bg-agri-gold items-center justify-center mr-2">
+                <Ionicons name="leaf" size={17} color="#073B25" />
               </View>
-              <H2 className="font-bold text-kisan-green text-[18px]">Kisan AI</H2>
+              <H2 className="font-bold text-white text-[18px]">Kisan AI</H2>
             </View>
             <TouchableOpacity onPress={() => setStep(3)}>
-              <Caption className="text-theme-muted font-medium">Skip</Caption>
+              <Caption className="text-white/80 font-medium">Skip</Caption>
             </TouchableOpacity>
-          </View>
+          </LinearGradient>
 
           {/* Carousel content */}
           <View className="flex-1 items-center justify-center px-6">
             <Animated.View entering={FadeIn.duration(400)} exiting={FadeOut} key={step} className="items-center w-full">
               {step === 0 && (
-                <View className="w-[280px] h-[280px] bg-leaf-light rounded-full items-center justify-center mb-10">
+                <View className="w-[280px] h-[280px] bg-white rounded-[42px] items-center justify-center mb-10 border border-theme-border shadow-sm">
                   <Ionicons name="leaf" size={120} color="#1A7A4A" />
                 </View>
               )}
@@ -162,10 +164,10 @@ export default function OnboardingScreen({ navigation }: any) {
                     { icon: 'partly-sunny', bg: '#EAF4FE', label: '3. Hyperlocal Weather Alerts' },
                   ].map((item, i) => (
                     <View key={i} className="flex-row items-center mb-6">
-                      <View className="w-12 h-12 rounded-full items-center justify-center mr-4" style={{ backgroundColor: item.bg }}>
+                      <View className="w-12 h-12 rounded-[16px] items-center justify-center mr-4 border border-theme-border" style={{ backgroundColor: item.bg }}>
                         <Ionicons name={item.icon as any} size={24} color="#1A7A4A" />
                       </View>
-                      <H2>{item.label}</H2>
+                      <H2 className="text-theme-text font-bold">{item.label}</H2>
                     </View>
                   ))}
                 </View>
@@ -176,7 +178,7 @@ export default function OnboardingScreen({ navigation }: any) {
                     <TouchableOpacity
                       key={lang.display}
                       onPress={() => handleLangSelect(lang.code)}
-                      className={`w-full py-4 px-5 rounded-[16px] border mb-3 flex-row items-center justify-between ${
+                      className={`w-full py-4 px-5 rounded-[18px] border mb-3 flex-row items-center justify-between shadow-sm ${
                         selectedLang === lang.code ? 'border-kisan-green bg-[#E8F5EE]' : 'border-theme-border bg-white'
                       }`}
                     >
@@ -206,8 +208,8 @@ export default function OnboardingScreen({ navigation }: any) {
       ) : (
         <Animated.View entering={FadeInUp.springify()} className="flex-1 px-6 justify-center">
           <View className="items-center mb-10">
-            <View className="w-16 h-16 rounded-[20px] bg-kisan-green items-center justify-center mb-6">
-              <Ionicons name="leaf" size={32} color="white" />
+            <View className="w-16 h-16 rounded-[22px] bg-kisan-deep items-center justify-center mb-6 shadow-sm">
+              <Ionicons name="leaf" size={32} color="#F6B84B" />
             </View>
             <H1 className="text-center font-bold text-[28px] mb-2">
               {showOtp ? 'OTP Darj karein' : 'Swagat hai! 🌾'}

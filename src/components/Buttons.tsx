@@ -4,8 +4,8 @@ import { BodyText, Caption } from './Typography';
 
 export const PrimaryButton = ({ title, className = '', ...props }: TouchableOpacityProps & { title: string; className?: string }) => (
   <TouchableOpacity
-    activeOpacity={0.8}
-    className={`bg-kisan-green rounded-[14px] h-[52px] items-center justify-center ${className}`}
+    activeOpacity={0.86}
+    className={`bg-kisan-green rounded-[16px] h-[52px] items-center justify-center shadow-sm border border-kisan-mint/30 ${className}`}
     {...props}
   >
     <BodyText className="text-white font-bold text-[16px]">{title}</BodyText>
@@ -14,8 +14,8 @@ export const PrimaryButton = ({ title, className = '', ...props }: TouchableOpac
 
 export const SecondaryButton = ({ title, className = '', ...props }: TouchableOpacityProps & { title: string; className?: string }) => (
   <TouchableOpacity
-    activeOpacity={0.8}
-    className={`bg-leaf-light rounded-[14px] h-[52px] items-center justify-center border-[1px] border-kisan-green ${className}`}
+    activeOpacity={0.86}
+    className={`bg-white rounded-[16px] h-[52px] items-center justify-center border-[1px] border-kisan-green shadow-sm ${className}`}
     {...props}
   >
     <BodyText className="text-kisan-green font-bold text-[16px]">{title}</BodyText>
@@ -35,10 +35,10 @@ export const DangerButton = ({ title, className = '', ...props }: TouchableOpaci
 export const Chip = ({ title, active = false, className = '', ...props }: TouchableOpacityProps & { title: string; active?: boolean; className?: string }) => (
   <TouchableOpacity
     activeOpacity={0.7}
-    className={`px-3 py-1.5 rounded-full mr-2 ${active ? 'bg-kisan-green' : 'bg-leaf-light'} ${className}`}
+    className={`px-3.5 py-2 rounded-full mr-2 border ${active ? 'bg-kisan-green border-kisan-green shadow-sm' : 'bg-white border-theme-border'} ${className}`}
     {...props}
   >
-    <Caption className={active ? 'text-white font-medium text-[12px]' : 'text-kisan-green font-medium text-[12px]'}>
+    <Caption className={active ? 'text-white font-bold text-[12px]' : 'text-theme-muted font-medium text-[12px]'}>
       {title}
     </Caption>
   </TouchableOpacity>
@@ -47,7 +47,7 @@ export const Chip = ({ title, active = false, className = '', ...props }: Toucha
 export const IconButton = ({ children, className = '', ...props }: TouchableOpacityProps & { className?: string; children: React.ReactNode }) => (
   <TouchableOpacity
     activeOpacity={0.7}
-    className={`w-9 h-9 rounded-full bg-leaf-light items-center justify-center ${className}`}
+    className={`w-10 h-10 rounded-full bg-white/90 items-center justify-center border border-white/40 shadow-sm ${className}`}
     {...props}
   >
     {children}

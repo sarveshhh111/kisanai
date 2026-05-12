@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, ScrollView, TouchableOpacity, Linking, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeInUp } from 'react-native-reanimated';
 import { H1, H2, BodyText, Caption } from '../components/Typography';
 import { SchemeCard } from '../components/Cards';
@@ -77,29 +78,29 @@ export default function YojanaScreen() {
       : ALL_SCHEMES.filter((s) => s.category === tab).length;
 
   return (
-    <View className="flex-1 bg-theme-surface pt-12">
-      <View className="px-5 pb-2">
-        <H1 className="mb-4">Sarkari Yojana 📄</H1>
+    <View className="flex-1 bg-theme-surface">
+      <LinearGradient colors={['#073B25', '#0F766E']} className="pt-14 px-5 pb-5 rounded-b-[28px]">
+        <View className="absolute right-[-44px] top-[-32px] w-[150px] h-[150px] rounded-full bg-white/10" />
+        <Caption className="text-white/70 font-medium">Eligibility, documents, direct apply</Caption>
+        <H1 className="mb-4 text-white text-[24px]">Sarkari Yojana 📄</H1>
 
-        {/* PM-KISAN Feature Card */}
         <Animated.View entering={FadeInUp.springify()} className="mb-4">
           <TouchableOpacity
             onPress={() => Linking.openURL('https://pmkisan.gov.in')}
             activeOpacity={0.85}
-            className="bg-[#EAF4FE] rounded-[16px] border border-[#BFDBFE] p-4 flex-row items-center shadow-sm"
+            className="bg-white/15 rounded-[22px] border border-white/25 p-4 flex-row items-center shadow-sm"
           >
-            <View className="w-12 h-12 rounded-full bg-white items-center justify-center mr-3 shadow-sm">
-              <Ionicons name="cash" size={24} color="#185FA5" />
+            <View className="w-12 h-12 rounded-[17px] bg-agri-gold items-center justify-center mr-3 shadow-sm">
+              <Ionicons name="cash" size={24} color="#073B25" />
             </View>
             <View className="flex-1">
-              <BodyText className="font-bold text-[#185FA5] mb-0.5">PM-KISAN Samman Nidhi</BodyText>
-              <Caption className="text-theme-text font-medium">Aapki next kist: ₹2,000 — Status check karein →</Caption>
+              <BodyText className="font-bold text-white mb-0.5">PM-KISAN Samman Nidhi</BodyText>
+              <Caption className="text-white/80 font-medium">Aapki next kist: ₹2,000 — Status check karein →</Caption>
             </View>
           </TouchableOpacity>
         </Animated.View>
 
-        {/* Search */}
-        <View className="flex-row items-center bg-white rounded-[12px] border border-theme-border px-3 mb-4 h-[44px]">
+        <View className="flex-row items-center bg-white rounded-[16px] border border-white/30 px-3 mb-4 h-[46px] shadow-sm">
           <Ionicons name="search" size={18} color="#9CA3AF" />
           <TextInput
             className="flex-1 ml-2 font-sans text-[14px] text-theme-text h-full"
@@ -110,7 +111,6 @@ export default function YojanaScreen() {
           />
         </View>
 
-        {/* Category tabs */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="mb-2">
           <View className="flex-row">
             {categories.map((cat) => (
@@ -118,14 +118,14 @@ export default function YojanaScreen() {
                 key={cat}
                 onPress={() => setActiveTab(cat)}
                 className={`px-4 py-2 mr-2 rounded-full border flex-row items-center ${
-                  activeTab === cat ? 'bg-kisan-green border-kisan-green' : 'bg-white border-theme-border'
+                  activeTab === cat ? 'bg-agri-gold border-agri-gold' : 'bg-white/15 border-white/25'
                 }`}
               >
-                <BodyText className={activeTab === cat ? 'text-white font-medium text-[13px]' : 'text-theme-muted text-[13px]'}>
+                <BodyText className={activeTab === cat ? 'text-kisan-deep font-bold text-[13px]' : 'text-white font-medium text-[13px]'}>
                   {cat}
                 </BodyText>
-                <View className={`ml-1.5 px-1.5 py-0.5 rounded-full ${activeTab === cat ? 'bg-white/30' : 'bg-theme-border'}`}>
-                  <Caption className={activeTab === cat ? 'text-white text-[10px] font-bold' : 'text-theme-muted text-[10px]'}>
+                <View className={`ml-1.5 px-1.5 py-0.5 rounded-full ${activeTab === cat ? 'bg-white/40' : 'bg-white/20'}`}>
+                  <Caption className={activeTab === cat ? 'text-kisan-deep text-[10px] font-bold' : 'text-white text-[10px]'}>
                     {countForTab(cat)}
                   </Caption>
                 </View>
@@ -133,10 +133,10 @@ export default function YojanaScreen() {
             ))}
           </View>
         </ScrollView>
-      </View>
+      </LinearGradient>
 
-      <ScrollView className="flex-1 px-5" showsVerticalScrollIndicator={false}>
-        <H2 className="mt-2 mb-3 font-bold text-theme-text">
+      <ScrollView className="flex-1 px-5 pt-5" showsVerticalScrollIndicator={false}>
+        <H2 className="mb-3 font-bold text-theme-text">
           {filtered.length} Yojana{filtered.length !== 1 ? 'ain' : ''} mili
         </H2>
 

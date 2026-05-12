@@ -10,6 +10,16 @@ module.exports = {
           dark: '#0F5C35',
           light: '#E8F5EE',
           mint: '#25A866',
+          deep: '#073B25',
+          glow: '#DDF8EA',
+        },
+        agri: {
+          teal: '#0F766E',
+          lime: '#84CC16',
+          gold: '#F6B84B',
+          cream: '#FFF8E7',
+          ink: '#10231A',
+          card: '#FFFFFF',
         },
         alert: {
           amber: '#D97706',
@@ -24,10 +34,10 @@ module.exports = {
           blueBg: '#EAF4FE',
         },
         theme: {
-          text: '#1A1A1A',
-          muted: '#4B5563',
-          border: '#E5E7EB',
-          surface: '#F9FAFB',
+          text: '#10231A',
+          muted: '#53655B',
+          border: '#DDE7E0',
+          surface: '#F3F7F1',
           tertiary: '#9CA3AF',
         },
         // Aliases used across screens

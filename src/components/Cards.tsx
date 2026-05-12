@@ -4,20 +4,23 @@ import { Ionicons } from '@expo/vector-icons';
 import { BodyText, Caption, H2 } from './Typography';
 
 export const StandardCard = ({ children, className = '', ...props }: any) => (
-  <View className={`bg-white rounded-[16px] px-[16px] py-[14px] border-[0.5px] border-theme-border flex shadow-sm ${className}`} {...props}>
+  <View className={`bg-white rounded-[18px] px-[16px] py-[14px] border-[1px] border-theme-border flex shadow-sm ${className}`} {...props}>
     {children}
   </View>
 );
 
 export const MetricCard = ({ label, value, className = '' }: { label: string; value: string; className?: string }) => (
-  <View className={`bg-theme-surface rounded-[12px] p-3 ${className}`}>
+  <View className={`bg-white rounded-[16px] p-3 border border-theme-border shadow-sm ${className}`}>
     <Caption className="mb-1">{label}</Caption>
     <H2 className="text-[24px] font-bold text-theme-text">{value}</H2>
   </View>
 );
 
 export const AlertCard = ({ title, message, className = '' }: { title: string; message: string; className?: string }) => (
-  <View className={`bg-alert-amberBg rounded-[14px] border-[0.5px] border-[#FBBF24] p-3 flex-row items-center ${className}`}>
+  <View className={`bg-alert-amberBg rounded-[16px] border-[1px] border-[#FBBF24] p-3 flex-row items-center shadow-sm ${className}`}>
+    <View className="w-9 h-9 rounded-full bg-white items-center justify-center mr-3">
+      <Ionicons name="warning-outline" size={18} color="#D97706" />
+    </View>
     <View className="flex-1">
       <BodyText className="font-medium text-alert-amber mb-0.5">{title}</BodyText>
       <Caption>{message}</Caption>
@@ -29,12 +32,20 @@ export const AlertCard = ({ title, message, className = '' }: { title: string; m
 export const AskBarCard = ({ onPress, className = '' }: { onPress?: () => void; className?: string }) => (
   <TouchableOpacity
     onPress={onPress}
-    activeOpacity={0.8}
-    className={`bg-[#F0FFF4] rounded-[16px] border-[1.5px] border-kisan-green px-4 py-3 flex-row items-center justify-between shadow-sm ${className}`}
+    activeOpacity={0.86}
+    className={`bg-kisan-deep rounded-[18px] border-[1px] border-kisan-mint/40 px-4 py-3 flex-row items-center justify-between shadow-sm ${className}`}
   >
-    <BodyText className="text-kisan-green font-medium">Kisan AI se poochein</BodyText>
-    <View className="w-8 h-8 rounded-full bg-kisan-green items-center justify-center">
-      <Ionicons name="send" size={14} color="white" />
+    <View className="flex-row items-center flex-1">
+      <View className="w-9 h-9 rounded-full bg-white/15 items-center justify-center mr-3">
+        <Ionicons name="sparkles" size={17} color="#F6B84B" />
+      </View>
+      <View>
+        <Caption className="text-white/70 text-[10px] font-medium">AI Salah</Caption>
+        <BodyText className="text-white font-bold">Kisan AI se poochein</BodyText>
+      </View>
+    </View>
+    <View className="w-9 h-9 rounded-full bg-agri-gold items-center justify-center">
+      <Ionicons name="send" size={15} color="#073B25" />
     </View>
   </TouchableOpacity>
 );
@@ -60,7 +71,7 @@ export const SchemeCard = ({
   <TouchableOpacity
     onPress={onPress}
     activeOpacity={0.7}
-    className={`bg-white rounded-[12px] p-4 shadow-sm border-l-[3px] my-2 ${className}`}
+    className={`bg-white rounded-[18px] p-4 shadow-sm border border-theme-border border-l-[4px] my-2 ${className}`}
     style={{ borderLeftColor: color }}
   >
     <View className="flex-row justify-between items-start mb-1">
